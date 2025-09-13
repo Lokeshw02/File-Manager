@@ -90,6 +90,10 @@ web-src/dist/
 src/main/resources/uploads/*
 !src/main/resources/uploads/.gitkeep
 
+# Generated static files (copied from React build)
+src/main/resources/static/*
+!src/main/resources/static/.gitkeep
+
 # Logs
 logs/
 *.log
