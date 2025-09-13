@@ -4,6 +4,8 @@ import axios from 'axios';
 import './App.css';
 import FileUpload from './components/FileUpload';
 import FileList from './components/FileList';
+import Popup from './components/Popup';
+import ConfirmationPopup from './components/ConfirmationPopup';
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -12,6 +14,22 @@ function App() {
   const [downloadingFile, setDownloadingFile] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
+  
+  // Popup state
+  const [popup, setPopup] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'info'
+  });
+
+  // Confirmation popup state
+  const [confirmationPopup, setConfirmationPopup] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: null
+  });
 
   // Allowed file types
   const allowedTypes = {
@@ -39,6 +57,46 @@ function App() {
   useEffect(() => {
     fetchFiles();
   }, []);
+
+  // Helper function to show popup
+  const showPopup = (title, message, type = 'info') => {
+    setPopup({
+      isOpen: true,
+      title,
+      message,
+      type
+    });
+  };
+
+  // Helper function to close popup
+  const closePopup = () => {
+    setPopup({
+      isOpen: false,
+      title: '',
+      message: '',
+      type: 'info'
+    });
+  };
+
+  // Helper function to show confirmation popup
+  const showConfirmationPopup = (title, message, onConfirm) => {
+    setConfirmationPopup({
+      isOpen: true,
+      title,
+      message,
+      onConfirm
+    });
+  };
+
+  // Helper function to close confirmation popup
+  const closeConfirmationPopup = () => {
+    setConfirmationPopup({
+      isOpen: false,
+      title: '',
+      message: '',
+      onConfirm: null
+    });
+  };
 
   // Handle file upload
   const handleFileUpload = async (file, fileInputRef) => {
@@ -72,13 +130,13 @@ function App() {
       if (response.data.success) {
         // Refresh files list
         await fetchFiles();
-        alert('File uploaded successfully!');
+        showPopup('Success!', 'File uploaded successfully!', 'success');
       } else {
-        alert('Upload failed: ' + response.data.message);
+        showPopup('Upload Failed', 'Upload failed: ' + response.data.message, 'error');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Upload failed: ' + (error.response?.data?.message || error.message));
+      showPopup('Upload Failed', 'Upload failed: ' + (error.response?.data?.message || error.message), 'error');
     } finally {
       setIsUploading(false);
       setUploadProgress(0);
@@ -122,9 +180,9 @@ function App() {
     } catch (error) {
       console.error('Download error:', error);
       if (error.response?.status === 404) {
-        alert('File not found. It may have been deleted.');
+        showPopup('File Not Found', 'File not found. It may have been deleted.', 'error');
       } else {
-        alert('Failed to download file. Please try again.');
+        showPopup('Download Failed', 'Failed to download file. Please try again.', 'error');
       }
     } finally {
       setDownloadingFile(null);
@@ -135,21 +193,27 @@ function App() {
   const handleFileDelete = async (file, event) => {
     event.stopPropagation(); // Prevent triggering file click
     
-    if (window.confirm(`Are you sure you want to delete "${file.originalName}"?`)) {
+    const deleteFile = async () => {
       try {
         const response = await axios.delete(`/api/files/${file.id}`);
         if (response.data.success) {
           // Remove file from the list
           setFiles(prevFiles => prevFiles.filter(f => f.id !== file.id));
-          alert('File deleted successfully!');
+          showPopup('Success!', 'File deleted successfully!', 'success');
         } else {
-          alert('Failed to delete file: ' + response.data.message);
+          showPopup('Delete Failed', 'Failed to delete file: ' + response.data.message, 'error');
         }
       } catch (error) {
         console.error('Error deleting file:', error);
-        alert('Failed to delete file: ' + (error.response?.data?.message || error.message));
+        showPopup('Delete Failed', 'Failed to delete file: ' + (error.response?.data?.message || error.message), 'error');
       }
-    }
+    };
+
+    showConfirmationPopup(
+      'Delete File',
+      `Are you sure you want to delete "${file.originalName}"? This action cannot be undone.`,
+      deleteFile
+    );
   };
 
 
@@ -172,6 +236,7 @@ function App() {
           uploadProgress={uploadProgress}
           onFileUpload={handleFileUpload}
           allowedTypes={allowedTypes}
+          onShowPopup={showPopup}
         />
 
         {/* File List Section */}
@@ -186,6 +251,26 @@ function App() {
           onFileDelete={handleFileDelete}
         />
       </div>
+
+      {/* Popup Component */}
+      <Popup
+        isOpen={popup.isOpen}
+        onClose={closePopup}
+        title={popup.title}
+        message={popup.message}
+        type={popup.type}
+      />
+
+      {/* Confirmation Popup Component */}
+      <ConfirmationPopup
+        isOpen={confirmationPopup.isOpen}
+        onClose={closeConfirmationPopup}
+        onConfirm={confirmationPopup.onConfirm}
+        title={confirmationPopup.title}
+        message={confirmationPopup.message}
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+      />
     </div>
   );
 }

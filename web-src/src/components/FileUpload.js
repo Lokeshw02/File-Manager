@@ -4,7 +4,8 @@ const FileUpload = ({
   isUploading, 
   uploadProgress, 
   onFileUpload, 
-  allowedTypes 
+  allowedTypes,
+  onShowPopup
 }) => {
   const fileInputRef = useRef(null);
 
@@ -14,13 +15,13 @@ const FileUpload = ({
 
     // Check file type
     if (!allowedTypes[file.type]) {
-      alert('File type not supported. Please upload: JPG, PNG, GIF, TXT, JSON, PDF, or CSV files.');
+      onShowPopup('Invalid File Type', 'File type not supported. Please upload: JPG, PNG, GIF, TXT, JSON, PDF, or CSV files.', 'warning');
       return;
     }
 
     // Check file size (max 10MB)
     if (file.size > 10 * 1024 * 1024) {
-      alert('File size too large. Maximum size is 10MB.');
+      onShowPopup('File Too Large', 'File size too large. Maximum size is 10MB.', 'warning');
       return;
     }
 
