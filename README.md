@@ -41,7 +41,7 @@ A modern, full-stack file management system built with **Spring Boot** and **Rea
 ### Prerequisites
 - **Java 11 or higher** - [Download here](https://adoptium.net/)
 - **Node.js 14 or higher** - [Download here](https://nodejs.org/)
-- **MySQL Database** (optional - uses H2 by default)
+- **MySQL Database** - [Download here](https://dev.mysql.com/downloads/)
 
 ### 🚀 Quick Setup (Recommended)
 
@@ -118,22 +118,43 @@ If you prefer to set up manually:
    java -jar target/demo-*.jar
    ```
 
-### 📊 Database Configuration (Optional)
+### 📊 Database Configuration (Required)
 
-The application uses **H2 in-memory database** by default, so no setup is required! If you want to use MySQL:
+**Important:** The application requires a MySQL database for persistent file storage. The H2 in-memory database is only for development and will lose all data when the application restarts.
 
-1. **Create Database:**
+1. **Install MySQL:**
+   - Download from [MySQL Official Site](https://dev.mysql.com/downloads/)
+   - Or use package manager: `brew install mysql` (macOS) / `sudo apt install mysql-server` (Ubuntu)
+
+2. **Create Database:**
    ```sql
+   mysql -u root -p
    CREATE DATABASE demo;
    ```
 
-2. **Update Configuration:**
+3. **Update Database Credentials (if needed):**
    ```properties
    # src/main/resources/application.properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/demo
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-   spring.jpa.hibernate.ddl-auto=update
+   spring.datasource.username=your_mysql_username
+   spring.datasource.password=your_mysql_password
+   ```
+   
+   **Default configuration:**
+   - Database: `demo`
+   - Username: `root`
+   - Password: `admin@123`
+   - URL: `jdbc:mysql://localhost:3306/demo`
+
+4. **Start MySQL Service:**
+   ```bash
+   # macOS
+   brew services start mysql
+   
+   # Ubuntu/Debian
+   sudo systemctl start mysql
+   
+   # Windows
+   # Start MySQL service from Services.msc
    ```
 
 ## 🎯 Usage
