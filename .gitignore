@@ -64,15 +64,15 @@ ehthumbs.db
 Thumbs.db
 
 # Node.js (Frontend)
-frontend/node_modules/
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
-frontend/.npm
-frontend/.eslintcache
-frontend/coverage/
-frontend/build/
-frontend/dist/
+web-src/node_modules/
+web-src/npm-debug.log*
+web-src/yarn-debug.log*
+web-src/yarn-error.log*
+web-src/.npm
+web-src/.eslintcache
+web-src/coverage/
+web-src/build/
+web-src/dist/
 
 # Environment variables
 .env

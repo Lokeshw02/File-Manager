@@ -4,6 +4,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.sql.SQLOutput;
 import java.util.Scanner;
 import com.example.demo.model.Student;
 import com.example.demo.repository.StudentRepository;
@@ -20,20 +22,7 @@ public class DemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter student name: ");
-        String name = scanner.nextLine();
 
-        System.out.print("Enter roll number: ");
-        String rollNumber = scanner.nextLine();
-
-        Student student = new Student();
-        student.setName(name);
-        student.setRollNumber(rollNumber);
-
-        studentRepository.save(student);
-
-        System.out.println("Student saved to database.");
     }
 }
