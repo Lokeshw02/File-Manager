@@ -64,6 +64,47 @@ A modern, full-stack file management system built with **Spring Boot** and **Rea
 ![Delete Success](docs/screenshots/6.png)
 *Success confirmation after file deletion*
 
+### 📊 Database Configuration
+
+The application uses **MySQL database** for persistent file storage. Your uploaded files and metadata will persist across application restarts.
+
+**Default configuration:**
+- Database: `demo`
+- Username: `root` (or your MySQL username)
+- Password: `your pswd` (or your MySQL password)
+- URL: `jdbc:mysql://localhost:3306/demo`
+
+**To set up MySQL:**
+
+1. **Install MySQL:**
+   - Download from [MySQL Official Site](https://dev.mysql.com/downloads/)
+   - Or use package manager: `brew install mysql` (macOS) / `sudo apt install mysql-server` (Ubuntu)
+
+2. **Create Database:**
+   ```sql
+   mysql -u root -p
+   CREATE DATABASE demo;
+   ```
+
+3. **Update Credentials (if needed):**
+   ```properties
+   # src/main/resources/application.properties
+   spring.datasource.username=your_mysql_username
+   spring.datasource.password=your_mysql_password
+   ```
+
+4. **Start MySQL Service:**
+   ```bash
+   # macOS
+   brew services start mysql
+   
+   # Ubuntu/Debian
+   sudo systemctl start mysql
+   
+   # Windows
+   # Start MySQL service from Services.msc
+   ```
+
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
@@ -72,6 +113,9 @@ A modern, full-stack file management system built with **Spring Boot** and **Rea
 - **MySQL Database** - [Download here](https://dev.mysql.com/downloads/)
 
 ### 🚀 Quick Setup (Recommended)
+
+> **Note:** Make sure your MySQL server is installed, running, and the database is set up **before** running the setup scripts. You may need to update the database connection settings in the backend configuration files to match your MySQL credentials.
+
 
 **For Unix/Linux/macOS:**
 ```bash
@@ -106,6 +150,8 @@ The setup script will automatically:
 - ✅ Copy frontend to Spring Boot static folder
 - ✅ Build Spring Boot JAR
 - ✅ Ready to run!
+
+After running `./run.sh` (or `run.bat` on Windows), the application will be available at: **http://localhost:8080/**
 
 ### 🔧 Manual Setup
 
@@ -145,47 +191,12 @@ If you prefer to set up manually:
    ```bash
    java -jar target/demo-*.jar
    ```
-
-### 📊 Database Configuration (Required)
-
-**Important:** The application requires a MySQL database for persistent file storage. The H2 in-memory database is only for development and will lose all data when the application restarts.
-
-1. **Install MySQL:**
-   - Download from [MySQL Official Site](https://dev.mysql.com/downloads/)
-   - Or use package manager: `brew install mysql` (macOS) / `sudo apt install mysql-server` (Ubuntu)
-
-2. **Create Database:**
-   ```sql
-   mysql -u root -p
-   CREATE DATABASE demo;
-   ```
-
-3. **Update Database Credentials (if needed):**
-   ```properties
-   # src/main/resources/application.properties
-   spring.datasource.username=your_mysql_username
-   spring.datasource.password=your_mysql_password
-   ```
    
-   **Default configuration:**
-   - Database: `demo`
-   - Username: `root`
-   - Password: `admin@123`
-   - URL: `jdbc:mysql://localhost:3306/demo`
-
-4. **Start MySQL Service:**
-   ```bash
-   # macOS
-   brew services start mysql
-   
-   # Ubuntu/Debian
-   sudo systemctl start mysql
-   
-   # Windows
-   # Start MySQL service from Services.msc
-   ```
+   The application will start and be available at: **http://localhost:8080/**
 
 ## 🎯 Usage
+
+Open your browser and navigate to: **http://localhost:8080/**
 
 1. **Upload Files:** Click "Choose File" to upload new files
 2. **Download Files:** Click the 📥 download button on any file
