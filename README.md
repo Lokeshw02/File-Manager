@@ -39,12 +39,49 @@ A modern, full-stack file management system built with **Spring Boot** and **Rea
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
-- Java 17 or higher
-- Node.js 14 or higher
-- MySQL Database
-- Maven
+- **Java 11 or higher** - [Download here](https://adoptium.net/)
+- **Node.js 14 or higher** - [Download here](https://nodejs.org/)
+- **MySQL Database** (optional - uses H2 by default)
 
-### Backend Setup
+### 🚀 Quick Setup (Recommended)
+
+**For Unix/Linux/macOS:**
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd file-manager
+
+# Run the setup script
+./setup.sh
+
+# Start the application
+./run.sh
+```
+
+**For Windows:**
+```cmd
+REM Clone the repository
+git clone <your-repo-url>
+cd file-manager
+
+REM Run the setup script
+setup.bat
+
+REM Start the application
+run.bat
+```
+
+The setup script will automatically:
+- ✅ Check prerequisites (Java & Node.js)
+- ✅ Install frontend dependencies
+- ✅ Build React frontend
+- ✅ Copy frontend to Spring Boot static folder
+- ✅ Build Spring Boot JAR
+- ✅ Ready to run!
+
+### 🔧 Manual Setup
+
+If you prefer to set up manually:
 
 1. **Clone the repository:**
    ```bash
@@ -52,44 +89,52 @@ A modern, full-stack file management system built with **Spring Boot** and **Rea
    cd file-manager
    ```
 
-2. **Configure Database:**
+2. **Set up Frontend:**
    ```bash
-   # Create MySQL database
-   mysql -u root -p
+   cd web-src
+   npm install
+   npm run build
+   cd ..
+   ```
+
+3. **Copy Frontend Build:**
+   ```bash
+   # Unix/Linux/macOS
+   rm -rf src/main/resources/static/*
+   cp -r web-src/build/* src/main/resources/static/
+   
+   # Windows
+   del /q src\main\resources\static\*
+   xcopy web-src\build\* src\main\resources\static\ /E /I /Y
+   ```
+
+4. **Build Spring Boot:**
+   ```bash
+   ./mvnw clean package -DskipTests
+   ```
+
+5. **Run Application:**
+   ```bash
+   java -jar target/demo-*.jar
+   ```
+
+### 📊 Database Configuration (Optional)
+
+The application uses **H2 in-memory database** by default, so no setup is required! If you want to use MySQL:
+
+1. **Create Database:**
+   ```sql
    CREATE DATABASE demo;
    ```
 
-3. **Update Database Configuration:**
+2. **Update Configuration:**
    ```properties
    # src/main/resources/application.properties
    spring.datasource.url=jdbc:mysql://localhost:3306/demo
    spring.datasource.username=your_username
    spring.datasource.password=your_password
+   spring.jpa.hibernate.ddl-auto=update
    ```
-
-4. **Run Backend:**
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-   Backend will start on `http://localhost:8080`
-
-### Frontend Setup
-
-1. **Navigate to frontend directory:**
-   ```bash
-   cd frontend
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start Frontend:**
-   ```bash
-   npm start
-   ```
-   Frontend will start on `http://localhost:3000`
 
 ## 🎯 Usage
 
@@ -147,26 +192,46 @@ file-manager/
 
 ## 🚀 Deployment
 
-### Development
+### Development Mode
 ```bash
+# Option 1: Use the setup script (recommended)
+./setup.sh && ./run.sh
+
+# Option 2: Manual development setup
 # Terminal 1 - Backend
 ./mvnw spring-boot:run
 
-# Terminal 2 - Frontend
-cd frontend && npm start
+# Terminal 2 - Frontend (separate window)
+cd web-src && npm start
 ```
 
-### Production
+### Production Mode
 ```bash
-# Build frontend
-cd frontend && npm run build
+# Use the setup script for production build
+./setup.sh
 
-# Copy to backend static folder
-cp -r build/* ../src/main/resources/static/
+# Run the production JAR
+./run.sh
 
-# Run backend (serves both API and frontend)
-./mvnw spring-boot:run
+# Or manually:
+java -jar target/demo-*.jar
 ```
+
+### Docker Deployment (Optional)
+```dockerfile
+# Dockerfile example
+FROM openjdk:17-jdk-slim
+COPY target/demo-*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+```
+
+### Cloud Deployment
+The built JAR file can be deployed to any cloud platform:
+- **Heroku**: `java -jar target/demo-*.jar`
+- **AWS EC2**: Upload JAR and run with Java
+- **Google Cloud**: Use Cloud Run or Compute Engine
+- **Azure**: Use App Service or Container Instances
 
 ## 🤝 Contributing
 
