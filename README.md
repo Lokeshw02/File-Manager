@@ -36,6 +36,34 @@ A modern, full-stack file management system built with **Spring Boot** and **Rea
 | **Text** | .txt | 📄 |
 | **Data** | .json, .csv | 📋 |
 
+## 📸 Screenshots
+
+### Complete User Flow
+
+#### 1. Main Interface
+![File Manager Main Interface](docs/screenshots/1.png)
+*Clean, modern interface with file upload and management capabilities*
+
+#### 2. File Selection
+![File Selection](docs/screenshots/2.png)
+*Easy file selection with drag & drop support*
+
+#### 3. File Upload Progress
+![File Upload Progress](docs/screenshots/3.png)
+*Real-time upload progress with beautiful animations*
+
+#### 4. Upload Success
+![Upload Success](docs/screenshots/4.png)
+*Custom success popup for successful file uploads*
+
+#### 5. Delete Confirmation
+![Delete Confirmation](docs/screenshots/5.png)
+*Confirmation popup for file deletion with clear action buttons*
+
+#### 6. Delete Success
+![Delete Success](docs/screenshots/6.png)
+*Success confirmation after file deletion*
+
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
