@@ -108,7 +108,7 @@ The application uses **MySQL database** for persistent file storage. Your upload
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
-- **Java 11 or higher** - [Download here](https://adoptium.net/)
+- **Java 17 or higher** -[Oracle JDK](https://www.oracle.com/java/technologies/downloads/)
 - **Node.js 14 or higher** - [Download here](https://nodejs.org/)
 - **MySQL Database** - [Download here](https://dev.mysql.com/downloads/)
 
