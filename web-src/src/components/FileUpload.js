@@ -7,6 +7,8 @@ const FileUpload = ({
   allowedTypes,
   onShowPopup
 }) => {
+ 
+  // A handle to the hidden file input so we can click and clear it without re-rendering
   const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
